@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: dubzland-git-debian9
-    image: jdubz/docker-ansible-debian9:slim
+    image: jdubz/docker-ansible-debian9:latest
     override_command: False
     tmpfs:
       - /run
@@ -16,7 +16,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     pre_build_image: true
   - name: dubzland-git-debian10
-    image: jdubz/docker-ansible-debian10:slim
+    image: jdubz/docker-ansible-debian10:latest
     override_command: False
     tmpfs:
       - /run
