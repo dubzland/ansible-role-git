@@ -1,0 +1,83 @@
+---
+- include_tasks: install-pcre2.yml
+
+- name: dump required Git version
+  debug:
+    var: dubzland_git_version
+
+- name: dump Git source url
+  debug:
+    var: dubzland_git_source_url
+
+- name: flag Git as needing install
+  set_fact:
+    _dubzland_git_need_install: True
+
+- name: determine if Git is installed
+  stat:
+    path: /usr/local/bin/git
+  register: _dubzland_git_binary
+
+- when: _dubzland_git_binary.stat.exists
+  block:
+    - name: determine the version of Git installed
+      shell: |
+        /usr/local/bin/git --version | sed 's/^git\ version\ \(.*\)/\1/g'
+      register: _dubzland_git_installed_version
+      changed_when: False
+      args:
+        warn: False
+
+    - name: dump installed Git version
+      debug:
+        var: _dubzland_git_installed_version
+
+    - name: determine if installed Git is valid
+      set_fact:
+        _dubzland_git_need_install: "{{ _dubzland_git_installed_version.stdout != dubzland_git_version }}"
+
+    - name: dump valid Git
+      debug:
+        var: _dubzland_git_need_install
+
+    - name: uninstall the existing Git version
+      command: make uninstall
+      args:
+        chdir: "{{ dubzland_git_source_root }}/ruby-{{ _dubzland_git_installed_version.stdout }}"
+      when: _dubzland_git_need_install
+
+- when: _dubzland_git_need_install
+  block:
+    - name: set the build directory for Git
+      set_fact:
+        _dubzland_git_build_dir: "{{ dubzland_git_source_root }}/git-{{ dubzland_git_version }}"
+
+    - name: download Git source
+      get_url:
+        url: "{{ dubzland_git_source_url }}"
+        dest: "{{ dubzland_git_source_root }}/git-{{ dubzland_git_version }}.tar.gz"
+        checksum: "sha256:{{ dubzland_git_source_sha256sum }}"
+
+    - name: unpack Git source
+      unarchive:
+        src: "{{ dubzland_git_source_root }}/git-{{ dubzland_git_version }}.tar.gz"
+        dest: "{{ dubzland_git_source_root }}"
+        remote_src: True
+
+    - name: configure Git source
+      command: ./configure --with-libpcre
+      args:
+        chdir: "{{ _dubzland_git_build_dir }}"
+        creates: "{{ _dubzland_git_build_dir }}/Makefile"
+
+    - name: build Git
+      command: make prefix=/usr/local all
+      args:
+        chdir: "{{ _dubzland_git_build_dir }}"
+        creates: "{{ _dubzland_git_build_dir }}/git"
+
+    - name: install Git
+      command: make prefix=/usr/local install
+      args:
+        chdir: "{{ _dubzland_git_build_dir }}"
+        creates: "/usr/local/bin/git"

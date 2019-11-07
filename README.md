@@ -1,48 +1,65 @@
-Role Name
-=========
+# Dubzland: Git
+[![Gitlab pipeline status (self-hosted)](https://img.shields.io/gitlab/pipeline/jdubz/dubzland-git?gitlab_url=https%3A%2F%2Fgit.dubzland.net)](https://git.dubzland.net/jdubz/dubzland-git/pipelines)
 
-A brief description of the role goes here.
+Installs and configures Git from source.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+Ansible 2.2 or higher.
 
-Role Variables
---------------
+## Role Variables
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+Available variables are listed below, along with their default values (see
+    `defaults/main.yml` for more info):
 
-Dependencies
-------------
+### dubzland_git_version
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+```yaml
+dubzland_git_version: "2.6.3"
+```
 
-Example Playbook
-----------------
+Specific version of Git to install.
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+### dubzland_git_source_root
 
-    - hosts: servers
-      roles:
-         - { role: dubzland-git, x: 42 }
+```yaml
+dubzland_git_source_root: "/usr/local/src"
+```
 
-License
--------
+Directory used to store tarballs, as well as extract and build source tree.
 
-BSD
+### dubzland_git_source_url
 
-Author Information
-------------------
+```yaml
+dubzland_git_source_url: "https://www.kernel.org/pub/software/scm/git-2.22.0.tar.gz"
+```
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+URL used to download Git source tarball.
+
+### dubzland_git_source_sha256sum
+
+```yaml
+dubzland_git_source_sha256sum: "a4b7e4365bee43caa12a38d646d2c93743d755d1cea5eab448ffb40906c9da0b"
+```
+
+SHA256 checksum used to validate the downloaded source tarball.
+
+## Dependencies
+
+None.
+
+## Example Playbook
+
+```yaml
+- hosts: all
+  roles:
+    - role: dubzland-git
+```
+
+## License
+
+MIT
+
+## Author
+
+* [Josh Williams](https://codingprime.com)

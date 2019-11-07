@@ -1,0 +1,14 @@
+---
+- name: ensure packages incompatible with Git are not present
+  package:
+    name: "{{ dubzland_git_conflicting_packages }}"
+    state: absent
+  tags:
+    - git
+
+- name: ensure Git dependencies are installed
+  package:
+    name: "{{ dubzland_git_prerequisites }}"
+    state: present
+  tags:
+    - git

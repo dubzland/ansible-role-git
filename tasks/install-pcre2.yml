@@ -1,0 +1,41 @@
+---
+- name: determine if libpcre2 is installed
+  stat:
+    path: /usr/local/lib/libpcre2-8.so"
+  register: _dubzland_git_libpcre2_library
+
+- when: not _dubzland_git_libpcre2_library.stat.exists
+  block:
+    - name: set the build directory for libpcre2
+      set_fact:
+        _dubzland_git_libpcre2_build_dir: "{{ dubzland_git_source_root }}/pcre2-{{ dubzland_git_libpcre2_version }}"
+
+    - name: download libpcre2 source
+      get_url:
+        url: "{{ dubzland_git_libpcre2_source_url }}"
+        dest: "{{ dubzland_git_source_root }}/pcre2-{{ dubzland_git_libpcre2_version }}.tar.gz"
+        checksum: "sha256:{{ dubzland_git_libpcre2_source_sha256sum }}"
+
+    - name: unpack libpcre2 source
+      unarchive:
+        src: "{{ dubzland_git_source_root }}/pcre2-{{ dubzland_git_libpcre2_version }}.tar.gz"
+        dest: "{{ dubzland_git_source_root }}"
+        remote_src: True
+
+    - name: configure libpcre2 source
+      command: ./configure --prefix=/usr --enable-jit
+      args:
+        chdir: "{{ _dubzland_git_libpcre2_build_dir }}"
+        creates: "{{ _dubzland_git_libpcre2_build_dir }}/Makefile"
+
+    - name: build libpcre2
+      command: make
+      args:
+        chdir: "{{ _dubzland_git_libpcre2_build_dir }}"
+        creates: "{{ _dubzland_git_libpcre2_build_dir }}/.libs/libpcre2-8.so"
+
+    - name: install libpcre2
+      command: make install
+      args:
+        chdir: "{{ _dubzland_git_libpcre2_build_dir }}"
+        creates: "/usr/lib/libpcre2-8.so"

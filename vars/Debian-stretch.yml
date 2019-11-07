@@ -1,0 +1,13 @@
+---
+dubzland_git_conflicting_packages:
+  - git
+  - git-core
+
+dubzland_git_prerequisites:
+  - autoconf
+  - build-essential
+  - gettext
+  - libcurl4-gnutls-dev
+  - libexpat1-dev
+  - libssl-dev
+  - libz-dev

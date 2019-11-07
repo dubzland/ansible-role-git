@@ -1,2 +1,10 @@
 ---
-# defaults file for dubzland-git
+dubzland_git_source_root: "/usr/local/src"
+
+dubzland_git_libpcre2_version: "10.33"
+dubzland_git_libpcre2_source_url: "https://ftp.pcre.org/pub/pcre/pcre2-{{ dubzland_git_libpcre2_version }}.tar.gz"
+dubzland_git_libpcre2_source_sha256sum: "e2e2899a97489fc6ad1b0cc3da7952c7cca991b4a0f7db6649b75d9721025d31"
+
+dubzland_git_version: "2.22.0"
+dubzland_git_source_url: "https://www.kernel.org/pub/software/scm/git/git-{{ dubzland_git_version }}.tar.gz"
+dubzland_git_source_sha256sum: "a4b7e4365bee43caa12a38d646d2c93743d755d1cea5eab448ffb40906c9da0b"
