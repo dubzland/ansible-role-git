@@ -1,14 +1,6 @@
 ---
 - include_tasks: install-pcre2.yml
 
-- name: dump required Git version
-  debug:
-    var: dubzland_git_version
-
-- name: dump Git source url
-  debug:
-    var: dubzland_git_source_url
-
 - name: flag Git as needing install
   set_fact:
     _dubzland_git_need_install: True
@@ -28,17 +20,9 @@
       args:
         warn: False
 
-    - name: dump installed Git version
-      debug:
-        var: _dubzland_git_installed_version
-
     - name: determine if installed Git is valid
       set_fact:
         _dubzland_git_need_install: "{{ _dubzland_git_installed_version.stdout != dubzland_git_version }}"
-
-    - name: dump valid Git
-      debug:
-        var: _dubzland_git_need_install
 
     - name: uninstall the existing Git version
       command: make uninstall
