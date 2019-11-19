@@ -14,4 +14,4 @@ galaxy_info:
         - buster
 
   galaxy_tags:
-    - firewall
+    - git
