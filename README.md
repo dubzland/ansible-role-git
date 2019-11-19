@@ -1,5 +1,5 @@
-# Dubzland: Git
-[![Gitlab pipeline status (self-hosted)](https://img.shields.io/gitlab/pipeline/jdubz/dubzland-git?gitlab_url=https%3A%2F%2Fgit.dubzland.net)](https://git.dubzland.net/jdubz/dubzland-git/pipelines)
+# Ansible Role: Git
+[![Gitlab pipeline status (self-hosted)](https://git.dubzland.net/dubzland/ansible-role-git/badges/master/pipeline.svg)](https://git.dubzland.net/dubzland/ansible-role-git)
 
 Installs and configures Git from source.
 
@@ -53,7 +53,7 @@ None.
 ```yaml
 - hosts: all
   roles:
-    - role: dubzland-git
+    - role: dubzland.git
 ```
 
 ## License
